@@ -13,6 +13,7 @@ public class VilleEntity {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -49,6 +50,16 @@ public class VilleEntity {
 
     public void setPays(String pays) {
         this.pays = pays;
+    }
+
+    @Override
+    public String toString() {
+        return "VilleEntity{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", codePostal=" + codePostal +
+                ", pays='" + pays + '\'' +
+                '}';
     }
 
     @Override
