@@ -4,12 +4,15 @@ import fr.m2i.medical.entities.PatientEntity;
 import fr.m2i.medical.entities.VilleEntity;
 import fr.m2i.medical.service.PatientService;
 import fr.m2i.medical.service.VilleService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.InvalidObjectException;
 import java.net.URI;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/ville")
@@ -48,16 +51,22 @@ public class VilleAPIController {
             return ResponseEntity.created( uri ).body(v);
 
         }catch ( InvalidObjectException e ){
-            return ResponseEntity.badRequest().build();
+            //return ResponseEntity.badRequest().build();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , e.getMessage() );
         }
+
     }
 
     @PutMapping(value="/{id}" , consumes = "application/json")
     public void update( @PathVariable int id , @RequestBody VilleEntity v ){
         try{
             vs.editVille( id , v );
-        }catch ( InvalidObjectException e ){
 
+        }catch ( NoSuchElementException e ){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND , "Ville introuvable" );
+
+        }catch ( InvalidObjectException e ){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , e.getMessage() );
         }
     }
 
