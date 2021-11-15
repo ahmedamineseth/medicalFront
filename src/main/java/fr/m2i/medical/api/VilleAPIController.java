@@ -75,6 +75,12 @@ public class VilleAPIController {
         try{
             vs.delete(id);
             return ResponseEntity.ok(null);
+
+            /**
+             * @TODO : Vérifier le cas de suppression d'une ville qui est déjà affectée à un patient
+             */
+
+
         }catch( Exception e ){
             return ResponseEntity.notFound().build();
         }
