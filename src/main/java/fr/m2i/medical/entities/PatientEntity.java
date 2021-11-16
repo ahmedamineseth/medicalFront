@@ -10,22 +10,11 @@ public class PatientEntity {
     private int id;
     private String nom;
     private String prenom;
-    private Date datenaissance;
+    private Date dateNaissance;
+    private String email;
+    private String telephone;
     private String adresse;
     private VilleEntity ville;
-
-    public PatientEntity(int id, String nom, String prenom, Date datenaissance, String adresse, VilleEntity ville) {
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.datenaissance = datenaissance;
-        this.adresse = adresse;
-        this.ville = ville;
-    }
-
-    public PatientEntity() {
-
-    }
 
     @Id
     @Column(name = "id", nullable = false)
@@ -59,13 +48,33 @@ public class PatientEntity {
     }
 
     @Basic
-    @Column(name = "datenaissance", nullable = false)
-    public Date getDatenaissance() {
-        return datenaissance;
+    @Column(name = "date_naissance", nullable = false)
+    public Date getDateNaissance() {
+        return dateNaissance;
     }
 
-    public void setDatenaissance(Date datenaissance) {
-        this.datenaissance = datenaissance;
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
+    }
+
+    @Basic
+    @Column(name = "email", nullable = false, length = 100)
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Basic
+    @Column(name = "telephone", nullable = false, length = 20)
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     @Basic
@@ -83,24 +92,12 @@ public class PatientEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PatientEntity that = (PatientEntity) o;
-        return id == that.id && Objects.equals(nom, that.nom) && Objects.equals(prenom, that.prenom) && Objects.equals(datenaissance, that.datenaissance) && Objects.equals(adresse, that.adresse);
-    }
-
-    @Override
-    public String toString() {
-        return "PatientEntity{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", datenaissance=" + datenaissance +
-                ", adresse='" + adresse + '\'' +
-                ", ville=" + ville +
-                '}';
+        return id == that.id && Objects.equals(nom, that.nom) && Objects.equals(prenom, that.prenom) && Objects.equals(dateNaissance, that.dateNaissance) && Objects.equals(email, that.email) && Objects.equals(telephone, that.telephone) && Objects.equals(adresse, that.adresse);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nom, prenom, datenaissance, adresse);
+        return Objects.hash(id, nom, prenom, dateNaissance, email, telephone, adresse);
     }
 
     @OneToOne

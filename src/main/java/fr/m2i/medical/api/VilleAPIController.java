@@ -4,6 +4,8 @@ import fr.m2i.medical.entities.PatientEntity;
 import fr.m2i.medical.entities.VilleEntity;
 import fr.m2i.medical.service.PatientService;
 import fr.m2i.medical.service.VilleService;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.InvalidObjectException;
 import java.net.URI;
+import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -72,17 +75,19 @@ public class VilleAPIController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> delete(@PathVariable int id) {
+        // Check sur l'existance de la ville, si ko => 404 not found
+        try{
+            VilleEntity v = vs.findVille(id);
+        }catch( Exception e ){
+            return ResponseEntity.notFound().build();
+        }
+
+        // si on a un problème à ce niveau => sql exception
         try{
             vs.delete(id);
             return ResponseEntity.ok(null);
-
-            /**
-             * @TODO : Vérifier le cas de suppression d'une ville qui est déjà affectée à un patient
-             */
-
-
-        }catch( Exception e ){
-            return ResponseEntity.notFound().build();
+        }catch( Exception e ) {
+            return ResponseEntity.badRequest().build();
         }
     }
 

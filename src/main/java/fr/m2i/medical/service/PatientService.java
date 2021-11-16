@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.io.InvalidObjectException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class PatientService {
@@ -34,6 +36,14 @@ public class PatientService {
         pr.deleteById(id);
     }
 
+    public static boolean validate(String emailStr) {
+        Pattern VALID_EMAIL_ADDRESS_REGEX =
+                Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
     private void checkPatient( PatientEntity p ) throws InvalidObjectException {
 
         if( p.getPrenom().length() <= 2 ){
@@ -48,7 +58,15 @@ public class PatientService {
             throw new InvalidObjectException("Adresse invalide");
         }
 
-        System.out.println( "Ville passée en param " + p.getVille().getId() );
+        if( p.getTelephone().length() <= 8 ){
+            throw new InvalidObjectException("Téléphone invalide");
+        }
+
+        if( p.getEmail().length() <= 5 || !validate( p.getEmail() ) ){
+            throw new InvalidObjectException("Email invalide");
+        }
+
+        //System.out.println( "Ville passée en param " + p.getVille().getId() );
 
         /* try{
             VilleEntity ve = vr.findById(p.getVille().getId()).get();
@@ -79,8 +97,10 @@ public class PatientService {
             pExistant.setPrenom( p.getPrenom() );
             pExistant.setNom( p.getNom() );
             pExistant.setAdresse( p.getAdresse() );
-            pExistant.setDatenaissance( p.getDatenaissance() );
+            pExistant.setDateNaissance( p.getDateNaissance() );
             pExistant.setVille( p.getVille() );
+            pExistant.setTelephone( p.getTelephone() );
+            pExistant.setEmail( p.getEmail() );
 
             pr.save( pExistant );
 
