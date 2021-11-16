@@ -16,6 +16,20 @@ public class PatientEntity {
     private String adresse;
     private VilleEntity ville;
 
+    public PatientEntity() {
+    }
+
+    public PatientEntity(int id, String nom, String prenom, Date dateNaissance, String email, String telephone, String adresse, VilleEntity ville) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.email = email;
+        this.telephone = telephone;
+        this.adresse = adresse;
+        this.ville = ville;
+    }
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
