@@ -45,7 +45,7 @@ public class VilleService {
         vr.save(v);
     }
 
-    public void delete(int id) throws ConstraintViolationException {
+    public void delete(int id) {
         vr.deleteById(id);
     }
 
