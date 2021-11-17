@@ -3,6 +3,7 @@ package fr.m2i.medical.controller;
 import fr.m2i.medical.entities.PatientEntity;
 import fr.m2i.medical.entities.VilleEntity;
 import fr.m2i.medical.service.VilleService;
+import org.aspectj.weaver.Iterators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -22,9 +24,14 @@ public class VilleController {
     @GetMapping(value = "")
     public String list( Model model, HttpServletRequest request ){
         String search = request.getParameter("search");
-        model.addAttribute("villes" , vservice.findAll( search ) );
+        Iterable<VilleEntity> villes = vservice.findAll(search);
+        model.addAttribute("villes" , villes );
         model.addAttribute( "error" , request.getParameter("error") );
         model.addAttribute( "success" , request.getParameter("success") );
+        model.addAttribute( "search" , search );
+
+        model.addAttribute( "nbElements" , 10  );
+        
         return "ville/list_ville";
     }
 
