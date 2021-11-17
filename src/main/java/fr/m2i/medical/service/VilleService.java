@@ -20,8 +20,12 @@ public class VilleService {
         this.vr = vr;
     }
 
-    public Iterable<VilleEntity> findAll() {
+    public Iterable<VilleEntity> findAll(  ) {
         return vr.findAll();
+    }
+
+    public Iterable<VilleEntity> findAll(  String search ) {
+        return vr.findByNomContains(search);
     }
 
     private void checkVille( VilleEntity v ) throws InvalidObjectException {
