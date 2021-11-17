@@ -32,7 +32,7 @@
         </div>
     </form>
 
-    <span class="badge bg-secondary" th:text="| ${ nbElements } ville(s) trouvée(s) |"></span>
+    <span class="badge bg-secondary" th:text="| ${ #lists.size(villes) } ville(s) trouvée(s) |"></span>
 
     <table class="table table-striped">
         <thead>

@@ -29,9 +29,6 @@ public class VilleController {
         model.addAttribute( "error" , request.getParameter("error") );
         model.addAttribute( "success" , request.getParameter("success") );
         model.addAttribute( "search" , search );
-
-        model.addAttribute( "nbElements" , 10  );
-        
         return "ville/list_ville";
     }
 
