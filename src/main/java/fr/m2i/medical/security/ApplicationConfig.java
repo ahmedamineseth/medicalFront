@@ -56,7 +56,7 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/login" , "/css/**" , "/images/**" , "/js/**").permitAll();
 
-        // Tous les actions post pourront être exécutés par les admin
+        // Tous les actions post pourront être exécutés par les admin : plus d'erreur 403 en post
         http.authorizeRequests().antMatchers("**/add" , "**/edit/**", "**/delete/**").hasRole("ADMIN");
 
         http.authorizeRequests().anyRequest().authenticated();
