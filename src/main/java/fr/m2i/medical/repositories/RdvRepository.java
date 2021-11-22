@@ -25,6 +25,9 @@ public interface RdvRepository extends CrudRepository<RdvEntity, Integer> {
     @Query( value="SELECT * FROM rdv WHERE patient = ?1 AND  date(dateheure) = ?2", nativeQuery=true )
     public Iterable<RdvEntity> findByCustomByDateEtPatient(int patientId , Date dh); // , Date rdvDate
 
+    @Query(value=" SELECT month(dateheure) as mois , year(dateheure) as annee , count(*) as nbre FROM rdv GROUP BY month(dateheure) , year(dateheure)", nativeQuery=true)
+    List<Object> getRdvStats();
+
     // select * from rdv where patient = :1 AND date(dateheure) = ':2'
 
 }
