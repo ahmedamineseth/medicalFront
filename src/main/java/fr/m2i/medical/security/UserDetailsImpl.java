@@ -55,4 +55,8 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+    public UserEntity getUser(){
+        return user;
+    }
+
 }

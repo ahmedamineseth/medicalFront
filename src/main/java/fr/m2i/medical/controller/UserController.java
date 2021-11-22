@@ -113,4 +113,31 @@ public class UserController {
         return "redirect:/user"+message;
     }
 
+    @PostMapping(value = "/profil/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER" })
+    public String editProfil( @PathVariable int id , HttpServletRequest request ){
+        // Récupération des paramètres envoyés en POST
+        String titi = request.getParameter("tata");
+        String email = request.getParameter("email");
+        String usertype = request.getParameter("roles");
+        String username = request.getParameter("username");
+
+        // String username, String email, String roles, String password, String name
+        // Préparation de l'entité à sauvegarderpassword
+        UserEntity u = new UserEntity( username, email, usertype, "", titi );
+        u.setId( id );
+
+        // Enregistrement en utilisant la couche service qui gère déjà nos contraintes
+        try{
+            uservice.editProfil( id, u );
+         }catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
+
+        // Mettre à jour l'utilisateur ????
+
+
+        return "redirect:/patient?success=true";
+    }
+
 }
