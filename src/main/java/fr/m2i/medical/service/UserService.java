@@ -67,6 +67,7 @@ public class UserService {
             uExistant.setEmail( u.getEmail() );
             uExistant.setName( u.getName() );
             uExistant.setUsername( u.getUsername() );
+            uExistant.setPhotouser( u.getPhotouser() );
 
             ur.save( uExistant );
 
