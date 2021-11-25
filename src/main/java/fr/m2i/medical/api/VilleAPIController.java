@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InvalidObjectException;
 import java.net.URI;
 import java.sql.SQLException;
@@ -28,8 +29,11 @@ public class VilleAPIController {
     }
 
     @GetMapping(value="" , produces = "application/json")
-    public Iterable<VilleEntity> getAll(){
-        return vs.findAll();
+    public Iterable<VilleEntity> getAll( HttpServletRequest request ){
+        String search = request.getParameter("search");
+        System.out.println( "Recherche de ville avec param = " + search );
+        return vs.findAll( search );
+
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
