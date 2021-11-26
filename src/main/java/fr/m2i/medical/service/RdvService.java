@@ -66,7 +66,6 @@ public class RdvService {
         Timestamp before30min = (Timestamp) v.getDateheure().clone();
         before30min.setTime(after30min.getTime() - TimeUnit.MINUTES.toMillis(15));
 
-
         System.out.println( "Je check les rdv entre " + before30min + " et " + after30min );
 
         Iterable<RdvEntity> retourCheck = rdvRepo.findByDateheureBetween( before30min , after30min );
@@ -74,7 +73,6 @@ public class RdvService {
         if( retourCheck.iterator().hasNext() ){
             throw new Exception("Rdv en conflit avec d'autres rdv");
         }
-
 
     }
 
