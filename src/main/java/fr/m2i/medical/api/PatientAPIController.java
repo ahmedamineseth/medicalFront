@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InvalidObjectException;
 import java.net.URI;
 import java.sql.Date;
@@ -29,8 +30,11 @@ public class PatientAPIController {
     }
 
     @GetMapping(value="" , produces = "application/json")
-    public Iterable<PatientEntity> getAll(){
-        return ps.findAll();
+    public Iterable<PatientEntity> getAll( HttpServletRequest request ){
+        String search = request.getParameter("search");
+        System.out.println( "Recherche de patient avec param = " + search );
+        return ps.findAll( search );
+
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
