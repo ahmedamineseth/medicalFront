@@ -96,7 +96,7 @@ public class RdvController {
     }
 
     @RequestMapping( method = { RequestMethod.GET , RequestMethod.POST} , value = "/edit/{id}" )
-    public String editGetPost( Model model , @PathVariable int id ,  HttpServletRequest request ){
+    public String editGetPost( Model model , @PathVariable int id ,  HttpServletRequest request ) throws Exception {
 
         if( request.getMethod().equals("POST") ){
             rdvService.editRdv( id, createRDV( request ) );

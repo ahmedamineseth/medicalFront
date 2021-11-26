@@ -10,7 +10,7 @@ import java.util.Objects;
 @Table(name = "rdv", schema = "medical5", catalog = "")
 public class RdvEntity {
     private int id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "UTC+1")
     private Timestamp dateheure;
     private Integer duree;
     private String note;

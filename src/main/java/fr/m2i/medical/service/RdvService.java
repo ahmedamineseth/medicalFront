@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RdvService {
@@ -54,11 +55,25 @@ public class RdvService {
         return rdvRepo.findAll( paging );
     } */
 
-    private void checkRdv( RdvEntity v ) throws InvalidObjectException {
+    private void checkRdv( RdvEntity v ) throws Exception {
 
-        /* if( v.getNom().length() <= 2  ){
-            throw new InvalidObjectException("Nom de ville invalide");
-        } */
+        /*if( rdvRepo.findByDateheure( v.getDateheure() ).iterator().hasNext() ){
+            throw new Exception("Rdv Existe déjà");
+        }*/
+        Timestamp after30min = (Timestamp) v.getDateheure().clone();
+        after30min.setTime(after30min.getTime() + TimeUnit.MINUTES.toMillis(15));
+
+        Timestamp before30min = (Timestamp) v.getDateheure().clone();
+        before30min.setTime(after30min.getTime() - TimeUnit.MINUTES.toMillis(15));
+
+
+        System.out.println( "Je check les rdv entre " + before30min + " et " + after30min );
+
+        Iterable<RdvEntity> retourCheck = rdvRepo.findByDateheureBetween( before30min , after30min );
+
+        if( retourCheck.iterator().hasNext() ){
+            throw new Exception("Rdv en conflit avec d'autres rdv");
+        }
 
 
     }
@@ -67,7 +82,7 @@ public class RdvService {
         return rdvRepo.findById(id).get();
     }
 
-    public void addRdv( RdvEntity v ) throws InvalidObjectException {
+    public void addRdv( RdvEntity v ) throws Exception {
         checkRdv(v);
         rdvRepo.save(v);
         //email
@@ -77,8 +92,8 @@ public class RdvService {
         rdvRepo.deleteById(id);
     }
 
-    public void editRdv( int id , RdvEntity rdv) throws NoSuchElementException {
-        //checkRdv(v);
+    public void editRdv( int id , RdvEntity rdv) throws NoSuchElementException, Exception {
+        checkRdv(rdv);
         try{
             RdvEntity rdvExistant = rdvRepo.findById(id).get();
 

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface RdvRepository extends JpaRepository<RdvEntity, Integer> {
@@ -21,6 +22,10 @@ public interface RdvRepository extends JpaRepository<RdvEntity, Integer> {
 
     @Query(value=" SELECT month(dateheure) as mois , year(dateheure) as annee , count(*) as nbre FROM rdv GROUP BY month(dateheure) , year(dateheure)", nativeQuery=true)
     List<Object> getRdvStats();
+
+    public Iterable<RdvEntity> findByDateheure(Timestamp d );
+
+    public Iterable<RdvEntity> findByDateheureBetween(Timestamp dateheure, Timestamp dateheure2);
 
     // select * from rdv where patient = :1 AND date(dateheure) = ':2'
 

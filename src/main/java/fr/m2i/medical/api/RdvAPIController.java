@@ -15,6 +15,7 @@ import java.io.InvalidObjectException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -28,14 +29,12 @@ public class RdvAPIController {
     RdvService rs;
 
     @GetMapping(path = "", produces = "application/json")
-    public ResponseEntity<Iterable<RdvEntity>> getallRDVApi(HttpServletRequest request ){
-        System.out.println( "\nVal recherchée = "+ request.getParameter("patient") + "\n" );
+    public ResponseEntity<Iterable<RdvEntity>> getallRDVApi(  @RequestParam(name = "patient", required = false, defaultValue = "0") int patient
+            ,  @RequestParam(name = "datesearch", required = false, defaultValue = "") String datesearch ){
+        
+        System.out.println( "\nVal recherchée = patient =  "+ patient + ", date search = "+datesearch+"\n" );
 
-        try {
-            return ResponseEntity.ok().body(rs.findAll());
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok().body(rs.findAll( patient , datesearch ));
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
