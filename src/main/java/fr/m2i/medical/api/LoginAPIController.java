@@ -52,14 +52,22 @@ public class LoginAPIController {
 
     }
 
-    @PutMapping( value = "/api/profil/{id}" ,  consumes = "application/json" ,  produces = "application/json")
-    public ResponseEntity<UserEntity> editProfil(@PathVariable int id , @RequestBody  UserEntity u /*, @RequestParam("photoProfil") MultipartFile file */ ) throws IOException {
+    @PutMapping( value = "/api/profil/{id}" ,  produces = "application/json")
+    public ResponseEntity<UserEntity> editProfil(@PathVariable int id ,  @RequestParam("photouser") MultipartFile file , HttpServletRequest request ) throws IOException {
 
 
-        String photo = ""; //storageService.store(file , "src\\main\\resources\\static\\images\\uploads");
+        // Récupération des paramètres envoyés en POST
+        String titi = request.getParameter("name");
+        String email = request.getParameter("email");
+        String usertype = request.getParameter("roles");
+        String username = request.getParameter("username");
+
+
+        String photo = storageService.store(file , "src\\main\\resources\\static\\images\\uploads");
 
         // String username, String email, String roles, String password, String name
         // Préparation de l'entité à sauvegarderpassword
+        UserEntity u = new UserEntity( username, email, usertype, "", titi , photo);
         u.setId( id );
 
         // Enregistrement en utilisant la couche service qui gère déjà nos contraintes
