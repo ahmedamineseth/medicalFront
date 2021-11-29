@@ -4,14 +4,17 @@ import fr.m2i.medical.entities.UserEntity;
 import fr.m2i.medical.entities.VilleEntity;
 import fr.m2i.medical.repositories.UserRepository;
 import fr.m2i.medical.security.UserDetailsImpl;
+import fr.m2i.medical.service.StorageServiceImpl;
+import fr.m2i.medical.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 public class LoginAPIController {
@@ -21,6 +24,12 @@ public class LoginAPIController {
 
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired
+    private StorageServiceImpl storageService;
+
+    @Autowired
+    private UserService uservice;
 
     @PostMapping( value = "/api/login" ,  consumes = "application/json" ,  produces = "application/json")
     public ResponseEntity<UserEntity> get( @RequestBody  UserEntity u ) {
@@ -41,5 +50,25 @@ public class LoginAPIController {
             return ResponseEntity.badRequest().build();
         }
 
+    }
+
+    @PutMapping( value = "/api/profil/{id}" ,  consumes = "application/json" ,  produces = "application/json")
+    public ResponseEntity<UserEntity> editProfil(@PathVariable int id , @RequestBody  UserEntity u /*, @RequestParam("photoProfil") MultipartFile file */ ) throws IOException {
+
+
+        String photo = ""; //storageService.store(file , "src\\main\\resources\\static\\images\\uploads");
+
+        // String username, String email, String roles, String password, String name
+        // Préparation de l'entité à sauvegarderpassword
+        u.setId( id );
+
+        // Enregistrement en utilisant la couche service qui gère déjà nos contraintes
+        try{
+            uservice.editProfil( id, u );
+        }catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
+
+        return ResponseEntity.ok(u);
     }
 }
