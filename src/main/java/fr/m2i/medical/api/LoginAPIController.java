@@ -52,18 +52,20 @@ public class LoginAPIController {
 
     }
 
+
     @PutMapping( value = "/api/profil/{id}" ,  produces = "application/json")
-    public ResponseEntity<UserEntity> editProfil(@PathVariable int id ,  @RequestParam("photouser") MultipartFile file , HttpServletRequest request ) throws IOException {
-
-
+    public ResponseEntity<UserEntity> editProfil(@PathVariable int id ,  @RequestParam(value = "photouser" , required = false) MultipartFile file , HttpServletRequest request ) throws IOException {
         // Récupération des paramètres envoyés en POST
         String titi = request.getParameter("name");
         String email = request.getParameter("email");
+        // not used => to remove
         String usertype = request.getParameter("roles");
         String username = request.getParameter("username");
 
+        String photo = null;
+        if( file != null )
+            photo = storageService.store(file , "src\\main\\resources\\static\\images\\uploads");
 
-        String photo = storageService.store(file , "src\\main\\resources\\static\\images\\uploads");
 
         // String username, String email, String roles, String password, String name
         // Préparation de l'entité à sauvegarderpassword

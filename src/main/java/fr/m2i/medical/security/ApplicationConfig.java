@@ -38,6 +38,9 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
     @Order(1)
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
+
+            http.authorizeRequests().antMatchers("/images/**" , "/images/uploads/**" ).permitAll();
+
             http.cors().and()
                     .antMatcher("/api/**")
                     .csrf()
@@ -58,7 +61,7 @@ public class ApplicationConfig extends WebSecurityConfigurerAdapter {
             //formLogin = utiliser un formulaire d'authetification - loginPage : chemin de l'authentification
             http.formLogin().loginPage("/login").defaultSuccessUrl("/");
             // Autoriser un accès anonyme sur les routes /login et /css/**
-            http.authorizeRequests().antMatchers("/login" , "/css/**" ).permitAll();
+            http.authorizeRequests().antMatchers("/login" , "/css/**" , "/images/**" , "/images/uploads/**" ).permitAll();
             // Autoriser les actions post pour les admins : ROLE_ADMIN
             http.authorizeRequests().antMatchers("**/add" , "**/edit/**" , "**/delete/**").hasRole("ADMIN");
 
