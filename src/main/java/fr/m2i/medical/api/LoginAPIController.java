@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Base64;
 
 @RestController
 public class LoginAPIController {
@@ -44,7 +45,9 @@ public class LoginAPIController {
 
             // user exists
             if( encoder.matches( u.getPassword() , user.getPassword() ) ){
-                user.setPassword("****");
+                String encoding = Base64.getEncoder().encodeToString((u.getUsername()+":"+u.getPassword()).getBytes());
+                user.setPassword(encoding);
+
                 return ResponseEntity.ok(user);
             }
             return ResponseEntity.badRequest().build();
@@ -60,6 +63,7 @@ public class LoginAPIController {
         String email = request.getParameter("email");
         // not used => to remove
         String usertype = request.getParameter("roles");
+        String SSS = "ee";
         String username = request.getParameter("username");
 
         String photo = null;
